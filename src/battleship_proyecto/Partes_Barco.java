@@ -15,7 +15,7 @@ public class Partes_Barco {
     private int vidas; // Vida entera : O, Segunda media : •, Vida baja : o, Destruido : + 
     private boolean PC; // Identifica si es una parte para los barcos de la computadora
 
-    public Partes_Barco() { //Este constructor creara las partes de barco que enrealdiad seran agaua, se inicializara siempre en true.
+    public Partes_Barco() { //Este constructor creara las partes de barco que enrealidad seran agua, se inicializara siempre en true.
         this.identificador = '~';
     }
 

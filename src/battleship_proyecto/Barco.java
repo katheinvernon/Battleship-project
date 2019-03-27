@@ -13,7 +13,7 @@ public class Barco {
     
     protected int tamaño, vida_Total, vida_partes;
     protected boolean pc;
-    protected Partes_Barco[] barco; //El barco estra hecho por un arreglo de Partes_Barco
+    protected Partes_Barco[] barco; //El barco estara hecho por un arreglo de Partes_Barco
 
     public Barco(int tamaño, int vida_partes) { //Barcos para el jugador
         this.tamaño = tamaño;

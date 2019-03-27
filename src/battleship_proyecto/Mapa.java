@@ -19,11 +19,9 @@ public class Mapa {
     private int indices[]; //Los indices y margenes se guardaran por separado
     private char margen[][];
     private int direcciones[][] = new int[6][3];
-    
-    public Mapa(){ // Este es el constructor de la clase mapa y se encargara de crear un mapa de las dimensiones (tamaño+3)x(tamaño+) que indique el usuario
-      
-        System.out.println("Escoja el tamaño del mapa: Pequeño(7) Mediano(8) Grande(9)");
-        this.tamaño = sn.nextInt();
+        
+    public Mapa(int tamaño){ // Este es el constructor de la clase mapa y se encargara de crear un mapa de las dimensiones (tamaño+3)x(tamaño+) que indique el usuario
+              
         this.mapa = new Partes_Barco[tamaño][tamaño];
         this.indices = new int[tamaño];
         this.margen = new char[2][(tamaño)+2];

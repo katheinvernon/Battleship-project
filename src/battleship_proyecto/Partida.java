@@ -16,9 +16,9 @@ public class Partida {
     Scanner input = new Scanner (System.in);
     
     //Variables 
-    Integer inicio, modo, dificultad, tamaño, nuevoJuego, tamañoBarco, tamañoBarcoPC;
+    Integer inicio, modo, dificultad, tamaño, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora;
         //Comprabaciones de que las opciones seleccionadas por el usuario sean válidas
-    Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false; 
+    Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false; 
             
     public void menuPrincipal () {
     
@@ -27,20 +27,17 @@ public class Partida {
         
             System.out.println("Deseas:"
                     + "\n[1] Empezar una nuevo juego"
-                    + "\n[2] Salir");
+                    + "\n[2] Ver las instrucciones"
+                    + "\n[3] Salir");
            
             inicio = input.nextInt();
 
-            if (inicio == 1) {
+            if (inicio == 1 || inicio == 2 || inicio == 3) {
 
                 opcion = true;
                 
             }
-            else if (inicio == 2){
             
-                opcion = true;
-                
-            }
             else {
 
                 System.out.println("Opción inválida, por favor selecciona una opción VÁLIDA");
@@ -57,8 +54,12 @@ public class Partida {
         }
         else if (inicio == 2){
             
-           System.out.println("****Gracias por jugar****");
+           comoJugar();
                 
+        }
+        else{
+        
+            System.out.println("****Gracias por jugar****");
         }
         
     }
@@ -67,9 +68,7 @@ public class Partida {
     public void nuevaPartida (){
             
         configuracionPartida ();
-            
-        empezarPartida ();
-            
+                   
     }
     
     //Función donde el usuario coloca toda la configuración de su partida 
@@ -81,7 +80,9 @@ public class Partida {
 
             tamañoMapa();
             
-            sextoBarco (); 
+            sextoBarco ();
+            
+            empezarPartida(tamaño);
             
             nuevoJuego();
                                      
@@ -133,28 +134,8 @@ public class Partida {
         
             dificultad = input.nextInt();
 
-            if (dificultad == 1) {
+            if (dificultad == 1 || dificultad == 2 || dificultad == 3 || dificultad == 4 || dificultad == 5) {
 
-                opcion3 = true;
-                
-            }
-            else if (dificultad == 2){
-            
-                opcion3 = true;
-                
-            }
-            else if (dificultad == 3){
-            
-                opcion3 = true;
-                
-            }
-            else if (dificultad == 4){
-            
-                opcion3 = true;
-                
-            }
-            else if (dificultad == 5){
-            
                 opcion3 = true;
                 
             }
@@ -166,6 +147,37 @@ public class Partida {
             }
             
         }while (!opcion3);
+        
+        if (dificultad == 1) {
+
+            vidaJugador = 3;
+            vidaComputadora = 1;
+                
+        }
+        else if (dificultad == 2){
+            
+            vidaJugador = 2;
+            vidaComputadora = 1;
+                
+        }
+        else if (dificultad == 3){
+            
+            vidaJugador = 1;
+            vidaComputadora = 1;
+                
+        }
+        else if (dificultad == 4){
+            
+            vidaJugador = 1;
+            vidaComputadora = 2;
+                
+        }
+        else {
+            
+            vidaJugador = 1;
+            vidaComputadora = 3;
+                
+        }
     
     }
     
@@ -175,27 +187,18 @@ public class Partida {
         do {
             
             System.out.println("Selecciona el tamaño del mapa en el que deseas jugar"
-                + "\n[1] Pequeño 7*7"
-                + "\n[2] Mediano 8*8"
-                + "\n[3] Grande 9*9");
+                + "\n[7] Pequeño 7*7"
+                + "\n[8] Mediano 8*8"
+                + "\n[9] Grande 9*9");
         
             tamaño = input.nextInt();
 
-            if (tamaño == 1) {
+            if (tamaño == 7 || tamaño == 8 || tamaño == 9) {
 
                 opcion4 = true;
                 
             }
-            else if (tamaño == 2){
             
-                opcion4 = true;
-                
-            }
-            else if (tamaño == 3){
-            
-                opcion4 = true;
-                
-            }
             else {
 
                 System.out.println("Opción inválida, por favor selecciona una opción VÁLIDA");
@@ -204,8 +207,9 @@ public class Partida {
             }
             
         }while (!opcion4);
-                        
-    }
+       
+      
+    } 
     
     //Función para la selección del tamaño del sexto barco tanto del usuario como de la computadora
     public void sextoBarco (){
@@ -263,7 +267,7 @@ public class Partida {
         
         if (nuevoJuego == 1){
             
-            empezarPartida();
+            empezarPartida(tamaño);
         }
         else {
         
@@ -272,9 +276,68 @@ public class Partida {
                 
     }
     
-    public void empezarPartida (){
+    public void empezarPartida (int tamañoMapa){
     
+        Mapa map = new Mapa(tamañoMapa);
+                
+        map.mapaImprimir();
+        
+        Barco barco1 = new Barco(7, 2, true);
+        Barco barco2 = new Barco(7, 2, true);
+        Barco barco3 = new Barco(7, 2, true);
+        Barco barco4 = new Barco(7, 2, true);
+        Barco barco5 = new Barco(7, 2, true);
+        Barco barco6 = new Barco(7, 2, true);
+        
+        Barco barcos[] = { barco1, barco2, barco3, barco4, barco5, barco6};
+        
+        map.verificarBarcos(barcos);
+        map.mapaImprimir();
+        
+        for (int i = 0; i < 30; i++) {
+            map.disparoPC();
+        }
     
+    }
+    
+    public void comoJugar(){
+    
+        do{
+            System.out.println("[----Cómo jugar----]"
+                + "\n\nO : El barco tiene la vida completa"
+                + "\n• : El barco tiene la vida media"
+                + "\no : El barco tiene la vida baja"
+                + "\n+ : El barco está destruido"
+                + "\n~ : Casilla llena de agua"
+                + "\nX : Disparo fallido ");
+            
+            System.out.println("\n***Habilidades***"
+                    + "\n");
+            
+            System.out.println("\n····Niveles de dificultad····"
+                    + "\nNivel             Vidas jugador             Vidas computador "
+                    + "\nMuy fácil              3                           1"
+                    + "\nFácil                  2                           1"
+                    + "\nNormal                 1                           1"
+                    + "\nDifícil                1                           2"
+                    + "\nMuy difícil            1                           3");
+        
+            System.out.println("\nPresione 0 [cero] para volver al menú");
+
+            volverMenu = input.nextInt();
+            
+            if(volverMenu == 0){
+            
+                opcion7=true;
+            }
+            else{
+            
+                opcion7=false;
+            }
+            
+        }while (!opcion7);
+        
+        menuPrincipal();
     }
     
 }
