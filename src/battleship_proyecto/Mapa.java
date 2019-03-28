@@ -115,7 +115,8 @@ public class Mapa {
             valido = false;
             
             while( !valido ){
-                System.out.println("Indique desde donde desea colocar su barco, comenzando primero por el indice de la fila: ");
+                System.out.println("\nBarco de tamaño: " + barco.tamaño);
+                System.out.println("\nIndique desde donde desea colocar su barco, comenzando primero por el indice de la fila: ");
                 x = sn.nextInt();
                 System.out.println("Ahora indique el indice de la columna: ");
                 y = sn.nextInt();
@@ -181,7 +182,7 @@ public class Mapa {
         boolean listo = false, poner = false, colocado = false, terminar = false;
         int posicion = 0, x = 0, y =0, contador = 0, contPosicion = 0, a = numBarcos;
         
-        if(numBarcos>5){
+        if(numBarcos>barcos.length-1){
             terminar = true;
         } else {
             do{
@@ -189,7 +190,7 @@ public class Mapa {
             y = (int)(Math.random()*(mapa.length-1)+1);
             posicion = (int)(Math.random()*2);
             contador++;
-                System.out.println(x+" "+y+" "+posicion+" "+a+" "+contador);
+                //System.out.println(x+" "+y+" "+posicion+" "+a+" "+contador);
                 do{  
                     switch(posicion){
                         
@@ -465,9 +466,7 @@ public class Mapa {
         }
         return true;
     }
-    
-    
-    
+            
     public boolean colocarArriba(int x, int y, int tamaño){
         
         for (int i = 0; i < tamaño; i++) {

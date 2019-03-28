@@ -16,10 +16,50 @@ public class Partida {
     Scanner input = new Scanner (System.in);
     
     //Variables 
-    Integer inicio, modo, dificultad, tamaño, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora;
+    Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora;
         //Comprabaciones de que las opciones seleccionadas por el usuario sean válidas
     Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false; 
-            
+    
+    public Integer getVidaComputadora() {
+        return vidaComputadora;
+    }
+
+    public void setVidaComputadora(Integer vidaComputadora) {
+        this.vidaComputadora = vidaComputadora;
+    }
+
+    public Integer getVidaJugador() {
+        return vidaJugador;
+    }
+    
+    public void setVidaJugador(Integer vidaJugador) {
+        this.vidaJugador = vidaJugador;
+    }
+
+    public Integer getTamañoBarco() {
+        return tamañoBarco;
+    }
+
+    public void setTamañoBarco(Integer tamañoBarco) {
+        this.tamañoBarco = tamañoBarco;
+    }
+
+    public Integer getTamañoBarcoPC() {
+        return tamañoBarcoPC;
+    }
+    
+    public void setTamañoBarcoPC(Integer tamañoBarcoPC) {
+        this.tamañoBarcoPC = tamañoBarcoPC;
+    }
+
+    public Integer getTamañoMapa() {
+        return tamañoMapa;
+    }
+
+    public void setTamañoMapa(Integer tamañoMapa) {
+        this.tamañoMapa = tamañoMapa;
+    }
+        
     public void menuPrincipal () {
     
         do {
@@ -27,7 +67,7 @@ public class Partida {
         
             System.out.println("Deseas:"
                     + "\n[1] Empezar una nuevo juego"
-                    + "\n[2] Ver las instrucciones"
+                    + "\n[2] Leer las instrucciones"
                     + "\n[3] Salir");
            
             inicio = input.nextInt();
@@ -46,50 +86,55 @@ public class Partida {
             }
            
         }while (!opcion);
-    
-        if (inicio == 1) {
-
-            nuevaPartida ();
-                
-        }
-        else if (inicio == 2){
             
-           comoJugar();
-                
-        }
-        else{
-        
-            System.out.println("****Gracias por jugar****");
+        switch (inicio) {
+            case 1:
+                nuevaPartida ();
+                break;
+            case 2:
+                comoJugar();
+                break;
+            default:
+                System.out.println("****Gracias por jugar****");
+                break;
         }
         
     }
     
     //Función para crear una nueva partida 
     public void nuevaPartida (){
-            
-        configuracionPartida ();
-                   
+                        
+        switch (modoJuego()) {
+        
+            case 1:
+              configuracionPartidaBatalla ();  
+              break;
+            default:
+                System.out.println("---Próximamente---"); 
+                nuevaPartida ();
+                break;        
+        }
+        
+        
     }
     
     //Función donde el usuario coloca toda la configuración de su partida 
-    public void configuracionPartida () {
-                                                        
-            modoJuego();
-
+    public void configuracionPartidaBatalla () {
+                      
             nivelDificultad();
 
-            tamañoMapa();
+            asignarTamañoMapa();
             
             sextoBarco ();
             
-            empezarPartida(tamaño);
+            empezarPartida(vidaJugador, vidaComputadora, tamañoMapa, tamañoBarco, tamañoBarcoPC);
             
             nuevoJuego();
                                      
     }
     
     //Función para la selección del modo de juego 
-    public void modoJuego() {
+    public int modoJuego() {
         
         do {
             
@@ -99,24 +144,22 @@ public class Partida {
         
             modo = input.nextInt();
 
-            if (modo == 1) {
-
-                opcion2 = true;
-                
-            }
-            else if (modo == 2){
-            
-                opcion2 = true;
-                
-            }
-            else {
-
-                System.out.println("Opción inválida, por favor selecciona una opción VÁLIDA");
-                opcion2 = false;
-                
+            switch (modo) {
+                case 1:
+                    opcion2 = true;
+                    break;
+                case 2:
+                    opcion2 = true;
+                    break;
+                default:
+                    System.out.println("Opción inválida, por favor selecciona una opción VÁLIDA");
+                    opcion2 = false;
+                    break;
             }
             
         }while (!opcion2);
+        
+        return modo;
     
     }
     
@@ -147,42 +190,34 @@ public class Partida {
             }
             
         }while (!opcion3);
-        
-        if (dificultad == 1) {
-
-            vidaJugador = 3;
-            vidaComputadora = 1;
-                
-        }
-        else if (dificultad == 2){
-            
-            vidaJugador = 2;
-            vidaComputadora = 1;
-                
-        }
-        else if (dificultad == 3){
-            
-            vidaJugador = 1;
-            vidaComputadora = 1;
-                
-        }
-        else if (dificultad == 4){
-            
-            vidaJugador = 1;
-            vidaComputadora = 2;
-                
-        }
-        else {
-            
-            vidaJugador = 1;
-            vidaComputadora = 3;
-                
+               
+        switch (dificultad) {
+            case 1:
+                vidaJugador = 3;
+                vidaComputadora = 1;
+                break;
+            case 2:
+                vidaJugador = 2;
+                vidaComputadora = 1;
+                break;
+            case 3:
+                vidaJugador = 1;
+                vidaComputadora = 1;
+                break;
+            case 4:
+                vidaJugador = 1;
+                vidaComputadora = 2;
+                break;
+            default:
+                vidaJugador = 1;
+                vidaComputadora = 3;
+                break;
         }
     
     }
     
     //Función para la selección del tamaño del mapa en el que se desea jugar
-    public void tamañoMapa() {
+    public void asignarTamañoMapa() {
     
         do {
             
@@ -191,9 +226,9 @@ public class Partida {
                 + "\n[8] Mediano 8*8"
                 + "\n[9] Grande 9*9");
         
-            tamaño = input.nextInt();
+            tamañoMapa = input.nextInt();
 
-            if (tamaño == 7 || tamaño == 8 || tamaño == 9) {
+            if (tamañoMapa == 7 || tamañoMapa == 8 || tamañoMapa == 9) {
 
                 opcion4 = true;
                 
@@ -267,7 +302,7 @@ public class Partida {
         
         if (nuevoJuego == 1){
             
-            empezarPartida(tamaño);
+            empezarPartida(vidaJugador, vidaComputadora, tamañoMapa, tamañoBarco, tamañoBarcoPC);
         }
         else {
         
@@ -276,27 +311,84 @@ public class Partida {
                 
     }
     
-    public void empezarPartida (int tamañoMapa){
+    public void empezarPartida (int vidaJugador, int vidaComputadora, int tamañoMapa, int tamañoBarco, int tamañoBarcoPC){
     
-        Mapa map = new Mapa(tamañoMapa);
-                
-        map.mapaImprimir();
+        Mapa mapPC = new Mapa(tamañoMapa);
+        Mapa mapUsuario = new Mapa(tamañoMapa);
         
-        Barco barco1 = new Barco(7, 2, true);
-        Barco barco2 = new Barco(7, 2, true);
-        Barco barco3 = new Barco(7, 2, true);
-        Barco barco4 = new Barco(7, 2, true);
-        Barco barco5 = new Barco(7, 2, true);
-        Barco barco6 = new Barco(7, 2, true);
+        imprimirMapas (mapPC, mapUsuario);
+                                        
+        //Creación de barcos pc
+        Barco barco1 = new Barco(2, vidaComputadora, true);
+        Barco barco2 = new Barco(3, vidaComputadora, true);
+        Barco barco3 = new Barco(3, vidaComputadora, true);
+        Barco barco4 = new Barco(4, vidaComputadora, true);
+        Barco barco5 = new Barco(5, vidaComputadora, true);
+        Barco barco6 = new Barco(tamañoBarcoPC, vidaComputadora, true);
         
-        Barco barcos[] = { barco1, barco2, barco3, barco4, barco5, barco6};
+        Barco barcosPC[] = {barco1, barco2, barco3, barco4, barco5, barco6};
         
-        map.verificarBarcos(barcos);
-        map.mapaImprimir();
+        //Creación de barcos usuario
+        Barco barcoU1 = new Barco(2, vidaJugador, false);
+        Barco barcoU2 = new Barco(3, vidaJugador, false);
+        Barco barcoU3 = new Barco(3, vidaJugador, false);
+        Barco barcoU4 = new Barco(4, vidaJugador, false);
+        Barco barcoU5 = new Barco(5, vidaJugador, false);
+        Barco barcoU6 = new Barco(tamañoBarco, vidaJugador, false);
         
-        for (int i = 0; i < 30; i++) {
-            map.disparoPC();
+        Barco barcosUsuario[] = {barcoU1, barcoU2, barcoU3, barcoU4, barcoU5, barcoU6};
+        
+        for(int i=0; i<barcosUsuario.length; i++){
+            mapUsuario.ponerBarco(barcosUsuario[i]);
+            mapUsuario.mapaImprimir();
         }
+        
+        mapPC.verificarBarcos(barcosPC);
+        
+        imprimirMapas (mapPC, mapUsuario);
+        
+        int aux=0;
+        
+        do{
+            mapPC.disparoRecibir();
+            imprimirMapas (mapPC, mapUsuario);
+            if(finalizoPartida(barcosPC)){
+                aux=1;
+            }
+            else{
+               mapUsuario.disparoPC();
+               imprimirMapas (mapPC, mapUsuario);
+               if(finalizoPartida(barcosUsuario)){
+                   aux=2;
+               }
+            }
+                   
+        } while (aux==0);
+        
+        if(aux==1){
+        
+            System.out.println("*** Felicidades ha ganado! ***");
+        }
+        else {
+            System.out.println("--- Perdiste T.T ---");
+        }
+    }
+    
+    public boolean finalizoPartida(Barco [] barcos) {
+
+        for(int i=0; i<barcos.length; i++){
+            if(barcos[i].getVida_Total()>0){
+                return false;
+            }
+        }
+        return true;        
+    }    
+    
+    public void imprimirMapas(Mapa pc, Mapa usuario) {
+    
+        pc.mapaImprimir();
+        System.out.println("-----------------------------------");
+        usuario.mapaImprimir();
     
     }
     

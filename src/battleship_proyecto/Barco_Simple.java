@@ -11,8 +11,8 @@ package battleship_proyecto;
  */
 public class Barco_Simple extends Barco{
     
-    public Barco_Simple(int tamaño, int vida_partes) {
-        super(tamaño, vida_partes);
+    public Barco_Simple(int tamaño, int vida_partes, boolean pc) {
+        super(tamaño, vida_partes, pc);
     }
     
     

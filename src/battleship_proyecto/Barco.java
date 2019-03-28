@@ -15,7 +15,7 @@ public class Barco {
     protected boolean pc;
     protected Partes_Barco[] barco; //El barco estara hecho por un arreglo de Partes_Barco
 
-    public Barco(int tamaño, int vida_partes) { //Barcos para el jugador
+    /*public Barco(int tamaño, int vida_partes) { //Barcos para el jugador
         this.tamaño = tamaño;
         this.vida_Total = vida_partes*tamaño; //El barco siempre tendra una vida total igual a su tamaño por las vidas iniciales de sus partes
         this.barco = new Partes_Barco[tamaño];
@@ -25,7 +25,7 @@ public class Barco {
             barco[i] = new Partes_Barco(vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
         }
     }
-    
+    */ 
     public Barco(int tamaño, int vida_partes, boolean pc) { //Barcos para la maquina
         this.pc = pc;
         this.tamaño = tamaño;
@@ -34,7 +34,7 @@ public class Barco {
         
         for (int i = 0; i < tamaño; i++) {
             
-            barco[i] = new Partes_Barco(true, vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
+            barco[i] = new Partes_Barco(pc, vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
         }
     }
     
@@ -60,7 +60,7 @@ public class Barco {
     }
 
     public int getVida_Total() {
-        return vida_Total;
+       return vida_Total;
     }
 
     public void setVida_Total(int vida_Total) {

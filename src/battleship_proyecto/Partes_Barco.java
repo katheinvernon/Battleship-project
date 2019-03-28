@@ -19,10 +19,10 @@ public class Partes_Barco {
         this.identificador = '~';
     }
 
-    public Partes_Barco(int vidas) { //Este constructor crea las partes de un barco, las cuales comenzaran con el caracter de "Vida entera" 
+    /*public Partes_Barco(int vidas) { //Este constructor crea las partes de un barco, las cuales comenzaran con el caracter de "Vida entera" 
         this.vidas = vidas;
         this.identificador = 'O';
-    }
+    }*/
     
     public Partes_Barco(boolean pc, int vidas) { //Este constructor crea las partes de un barco para la computadora, las cuales comenzaran con el caracter de "Vida entera" 
         this.PC = pc;
