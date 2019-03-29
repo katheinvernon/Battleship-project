@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Daniel
+ * @author Katherine
  */
 public class Partida {
     
@@ -313,6 +313,9 @@ public class Partida {
     
     public void empezarPartida (int vidaJugador, int vidaComputadora, int tamañoMapa, int tamañoBarco, int tamañoBarcoPC){
     
+        //Variable
+        int reiniciar;
+        
         Mapa mapPC = new Mapa(tamañoMapa);
         Mapa mapUsuario = new Mapa(tamañoMapa);
         
@@ -341,6 +344,17 @@ public class Partida {
         for(int i=0; i<barcosUsuario.length; i++){
             mapUsuario.ponerBarco(barcosUsuario[i]);
             mapUsuario.mapaImprimir();
+            System.out.println("Deseas reiniciar tu mapa?"
+                    + "\n[1] Si"
+                    + "\n[2] No");
+            reiniciar = input.nextInt();
+            if (reiniciar == 1) {
+                mapUsuario.vaciarMapa();
+                System.out.println("\nSu mapa ha sido reiniciado \n");
+                mapUsuario.mapaImprimir();
+                i=-1;
+            }
+            else {}
         }
         
         mapPC.verificarBarcos(barcosPC);
