@@ -15,7 +15,8 @@ public class Mapa {
     
     private final Scanner sn = new Scanner(System.in);
     private Partes_Barco mapa[][]; //El mapa del jugador
-    private int tamaño, numBarcos = 0;
+    private int tamaño, numBarcos = 0; 
+    private double disparosTotal, disparosAcertados;
     private int indices[]; //Los indices y margenes se guardaran por separado
     private char margen[][];
     private int direcciones[][] = new int[6][3];
@@ -25,6 +26,8 @@ public class Mapa {
         this.mapa = new Partes_Barco[tamaño][tamaño];
         this.indices = new int[tamaño];
         this.margen = new char[2][(tamaño)+2];
+        this.disparosAcertados = 0;
+        this.disparosTotal = 0;
         
         //Se crea los margenes 
         margen[0][0] = '┌';
@@ -270,8 +273,28 @@ public class Mapa {
     
         //Barco de tamaño 2
         for (int i = 0; i < barcos[0].tamaño; i++) {
-                mapa[2-1][(3-1)+i] = barcos[0].barco[i];
+                mapa[1][(2)+i] = barcos[0].barco[i];
         }
+        
+        for (int i = 0; i < barcos[5].tamaño; i++) {
+                mapa[6][(0)+i] = barcos[5].barco[i];
+        }
+        
+        for (int i = 0; i < barcos[2].tamaño; i++) {
+                mapa[4][(1)+i] = barcos[2].barco[i];
+        }
+        
+        for (int i = 0; i < barcos[4].tamaño; i++) {
+                mapa[3][(2)+i] = barcos[4].barco[i];
+        }
+        
+        for (int i = 0; i < barcos[3].tamaño; i++) {
+                mapa[(0)+i][0] = barcos[3].barco[i];
+        }
+        
+        for (int i = 0; i < barcos[1].tamaño; i++) {
+                mapa[(0)+i][6] = barcos[1].barco[i];
+        } 
     }
     
     public void vaciarMapa(){
@@ -288,35 +311,45 @@ public class Mapa {
         
         boolean valido = false, valido2 = false, valido3 = false;
         int fila = 0, columna = 0;
+        this.disparosTotal++;
         
         while(!valido3){
+        
+            
         while(!valido){
         System.out.println("Elija el indice de la fila en la que va a disparar: ");
         fila = sn.nextInt();
         if(fila<1 || fila>mapa.length)
-                System.out.println("Dato incorrecto, ingrese un numero de fila valido");
-        valido = true;
+            System.out.println("Dato incorrecto, ingrese un numero de fila valido");
+        else
+            valido = true;
         }
+        
         while(!valido2){
-        System.out.println("Ahora elija el indice de la columna en la que va a disparar: ");
+        System.out.println("Elija el indice de la columna en la que va a disparar: ");
         columna = sn.nextInt();
         if(columna<1 || columna>mapa.length)
-                System.out.println("Dato incorrecto, ingrese un numero de columna valido");
-        valido2 = true;
+            System.out.println("Dato incorrecto, ingrese un numero de columna valido");
+        else
+            valido2 = true;
         }
         
         fila = fila-1;
         columna = columna-1;
         
-        if(mapa[fila][columna].getIdentificador()=='X' || mapa[fila][columna].getIdentificador()=='+')
-                System.out.println("En esta casilla no tiene que dispara más, por favor, elija otra");
-        valido3 = true;
+        if(mapa[fila][columna].getIdentificador()=='X' || mapa[fila][columna].getIdentificador()=='+'){
+                valido = false;
+                valido2 = false;        
+                System.out.println("En esta casilla no tiene que dispara más, por favor, elija otra");}
+        else
+            valido3 = true;
         }
 
         switch (mapa[fila][columna].getIdentificador()) {
  
             case '~':
                 if(mapa[fila][columna].isPC()){
+                    this.disparosAcertados++;
                  switch(mapa[fila][columna].getVidas()) {
                     
                     case 1: mapa[fila][columna].setIdentificador('+');
@@ -331,7 +364,7 @@ public class Mapa {
                 else
                     mapa[fila][columna].setIdentificador('X');
                 break;
-            case 'O':
+            case 'O': this.disparosAcertados++;
                 switch(mapa[fila][columna].getVidas()) {
                     
                     case 1: mapa[fila][columna].setIdentificador('+');
@@ -344,7 +377,7 @@ public class Mapa {
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
-            case '•':
+            case '•': this.disparosAcertados++;
                 switch(mapa[fila][columna].getVidas()) {
                     
                     case 1: mapa[fila][columna].setIdentificador('+');
@@ -368,6 +401,7 @@ public class Mapa {
         
         boolean valido = false;
         int fila = 0, columna = 0;
+        this.disparosTotal++;
         
         do{
         
@@ -384,7 +418,7 @@ public class Mapa {
             case '~':
                 mapa[fila][columna].setIdentificador('X');
                 break;
-            case 'O':
+            case 'O': this.disparosAcertados++;
                 switch(mapa[fila][columna].getVidas()) {
                     
                     case 1: mapa[fila][columna].setIdentificador('+');
@@ -397,7 +431,7 @@ public class Mapa {
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
-            case '•':
+            case '•': this.disparosAcertados++;
                 switch(mapa[fila][columna].getVidas()) {
                     
                     case 1: mapa[fila][columna].setIdentificador('+');
@@ -407,7 +441,7 @@ public class Mapa {
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
-            case 'o':
+            case 'o': this.disparosAcertados++;
                 mapa[fila][columna].setIdentificador('+');
                 mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
@@ -516,6 +550,33 @@ public class Mapa {
     public void setNumBarcos(int numBarcos) {
         this.numBarcos = numBarcos;
     }
-    
+
+    public int[][] getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(int[][] direcciones) {
+        this.direcciones = direcciones;
+    }
+
+    public double getDisparosTotal() {
+        return disparosTotal;
+    }
+
+    public void setDisparosTotal(double disparosTotal) {
+        this.disparosTotal = disparosTotal;
+    }
+
+    public double getDisparosAcertados() {
+        return disparosAcertados;
+    }
+
+    public void setDisparosAcertados(double disparosAcertados) {
+        this.disparosAcertados = disparosAcertados;
+    }
+
+    public void setDisparosAcertados(int disparosAcertados) {
+        this.disparosAcertados = disparosAcertados;
+    }
    
 }
