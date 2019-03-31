@@ -14,7 +14,7 @@ public class Barco {
     protected int tamaño, vida_Total, vida_partes;
     protected boolean pc;
     protected Partes_Barco[] barco; //El barco estara hecho por un arreglo de Partes_Barco
-
+    
     /*public Barco(int tamaño, int vida_partes) { //Barcos para el jugador
         this.tamaño = tamaño;
         this.vida_Total = vida_partes*tamaño; //El barco siempre tendra una vida total igual a su tamaño por las vidas iniciales de sus partes
@@ -36,6 +36,7 @@ public class Barco {
             
             barco[i] = new Partes_Barco(pc, vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
         }
+        
     }
     
     protected int actualizarVidaTotal(){ //Devuelve y actualiza la vidad total de un barco 
