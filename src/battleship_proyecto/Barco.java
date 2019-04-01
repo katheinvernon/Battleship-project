@@ -25,6 +25,7 @@ public class Barco {
             
             barco[i] = new Partes_Barco(pc, vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
         }
+        
     }
     
     protected int actualizarVidaTotal(){ //Devuelve y actualiza la vidad total de un barco 

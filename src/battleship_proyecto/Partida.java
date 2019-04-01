@@ -16,10 +16,12 @@ public class Partida {
     Scanner input = new Scanner (System.in);
     
     //Variables 
-    private Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora;
-    private Long tiempo;
+    Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora, inputHabilidad, habilidadPC;
+    private long tiempo;
         //Comprabaciones de que las opciones seleccionadas por el usuario sean válidas
-    Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false; 
+    Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false, opcion8=false; 
+    int [] tamañoBarcosUsuario = {2,3,3,4,5,0};  
+    int [] tamañoBarcosPc = {2,3,3,4,5,0};
     
     public Integer getVidaComputadora() {
         return vidaComputadora;
@@ -60,7 +62,22 @@ public class Partida {
     public void setTamañoMapa(Integer tamañoMapa) {
         this.tamañoMapa = tamañoMapa;
     }
+    public int[] getTamañoBarcosPc() {
+        return tamañoBarcosPc;
+    }
 
+    public void setTamañoBarcosPc(int[] tamañoBarcos) {
+        this.tamañoBarcosPc = tamañoBarcosPc;
+    }
+    
+    public int[] getTamañoBarcosUsuario() {
+        return tamañoBarcosUsuario;
+    }
+
+    public void setTamañoBarcosUsuario(int[] tamañoBarcos) {
+        this.tamañoBarcosUsuario = tamañoBarcosUsuario;
+    }
+    
     public Long getTiempo() {
         return tiempo;
     }
@@ -68,7 +85,7 @@ public class Partida {
     public void setTiempo(Long tiempo) {
         this.tiempo = tiempo;
     }
-        
+    
     public void menuPrincipal () {
     
         do {
@@ -277,9 +294,14 @@ public class Partida {
             }
             
         } while (!opcion5);
+        
+        //Se coloca en vector de tamaños de los barcos el tamaño ingresado por el usuario
+        this.setTamañoBarcoUsuarioPos(tamañoBarco, 5); 
                                         
         tamañoBarcoPC = (int)(Math.random() * (7-tamañoBarco) + tamañoBarco);
-                        
+        
+        this.setTamañoBarcoPcPos(tamañoBarcoPC, 5);
+        
     }
     
     //Funcion para verificar si el usuario desea jugar de nuevo la misma partida(con la misma configuración inicial)
@@ -299,14 +321,12 @@ public class Partida {
                 System.out.println("Opción inválida, por favor selecciona una opción VÁLIDA");
                 
                 opcion6 = false;
-                
             }
             
             else {
             
                 opcion6 = true;
             }
-            
         }while(!opcion6);
         
         if (nuevoJuego == 1){
@@ -328,29 +348,81 @@ public class Partida {
                 
         Mapa mapPC = new Mapa(tamañoMapa);
         Mapa mapUsuario = new Mapa(tamañoMapa);
+        Barco barcosUsuario[] = new Barco [6];
+        Barco barcosPC[] = new Barco [6];
         
         imprimirMapas (mapPC, mapUsuario);
                                         
         //Creación de barcos pc
-        Barco barco1 = new Barco(2, vidaComputadora, true);
-        Barco barco2 = new Barco(3, vidaComputadora, true);
-        Barco barco3 = new Barco(3, vidaComputadora, true);
-        Barco barco4 = new Barco(4, vidaComputadora, true);
-        Barco barco5 = new Barco(5, vidaComputadora, true);
-        Barco barco6 = new Barco(tamañoBarcoPC, vidaComputadora, true);
+        for (int i=0; i < barcosPC.length; i++) {
         
-        Barco barcosPC[] = {barco1, barco2, barco3, barco4, barco5, barco6};
-        
+            habilidadPC = (int)(Math.random() * 4 + 0);
+            
+            switch (habilidadPC) {
+                case 0:
+                    barcosPC[i] = new BarcoSinHabilidad(this.getTamañoBarcosPc()[i], vidaComputadora, true);
+                    break;
+                case 1:
+                    barcosPC[i] = new BarcoHabilidad1(this.getTamañoBarcosPc()[i], vidaComputadora, true);
+                    break;
+                case 2:
+                    barcosPC[i] = new BarcoHabilidad2(this.getTamañoBarcosPc()[i], vidaComputadora, true);
+                    break;
+                case 3:
+                    barcosPC[i] = new BarcoHabilidad3(this.getTamañoBarcosPc()[i], vidaComputadora, true);
+                    break;
+                default:
+                    barcosPC[i] = new BarcoHabilidad4(this.getTamañoBarcosPc()[i], vidaComputadora, true);
+                    break;
+            }
+                  
+        }
+               
         //Creación de barcos usuario
-        Barco barcoU1 = new Barco(2, vidaJugador, false);
-        Barco barcoU2 = new Barco(3, vidaJugador, false);
-        Barco barcoU3 = new Barco(3, vidaJugador, false);
-        Barco barcoU4 = new Barco(4, vidaJugador, false);
-        Barco barcoU5 = new Barco(5, vidaJugador, false);
-        Barco barcoU6 = new Barco(tamañoBarco, vidaJugador, false);
+        for (int i=0; i < barcosUsuario.length; i++) {
         
-        Barco barcosUsuario[] = {barcoU1, barcoU2, barcoU3, barcoU4, barcoU5, barcoU6};
-        
+            do{
+                System.out.println("Seleccione la habilidad para el barco de tamaño: " + this.getTamañoBarcosUsuario()[i] 
+                    + "\n[0] Sin habilidad"
+                    + "\n[1] Vida extra"
+                    + "\n[2]"
+                    + "\n[3]"
+                    + "\n[4]");
+            
+                inputHabilidad = input.nextInt();
+                
+                if (inputHabilidad != 0 && inputHabilidad != 1 && inputHabilidad != 2 && inputHabilidad != 3 && 
+                    inputHabilidad != 4) {
+
+                    System.out.println("La opción de la habilidad ingresada es inválida, por favor ingrese una opción válida");
+                    opcion8 = false;
+                }
+                else {
+
+                    opcion8 = true;
+                }
+            }while (!opcion8);
+            
+            switch (inputHabilidad) {
+                case 0:
+                    barcosUsuario[i] = new BarcoSinHabilidad(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
+                    break;
+                case 1:
+                    barcosUsuario[i] = new BarcoHabilidad1(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
+                    break;
+                case 2:
+                    barcosUsuario[i] = new BarcoHabilidad2(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
+                    break;
+                case 3:
+                    barcosUsuario[i] = new BarcoHabilidad3(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
+                    break;
+                default:
+                    barcosUsuario[i] = new BarcoHabilidad4(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
+                    break;
+            }
+                    
+        }
+                
         for(int i=0; i<barcosUsuario.length; i++){
             mapUsuario.ponerBarco(barcosUsuario[i]);
             mapUsuario.mapaImprimir();
@@ -454,7 +526,10 @@ public class Partida {
                 + "\nX : Disparo fallido ");
             
             System.out.println("\n***Habilidades***"
-                    + "\n");
+                    + "\n[1] Vida extra: el barco tendrá una vida extra en cada una de sus partes"
+                    + "\n[2]"
+                    + "\n[3]"
+                    + "\n[4]");
             
             System.out.println("\n····Niveles de dificultad····"
                     + "\nNivel             Vidas jugador             Vidas computador "
@@ -481,5 +556,12 @@ public class Partida {
         
         menuPrincipal();
     }
+        
+    public void setTamañoBarcoPcPos(int tamañoBarco, int pos) {
+        this.tamañoBarcosPc [pos] = tamañoBarco;
+    }
     
+    public void setTamañoBarcoUsuarioPos(int tamañoBarco, int pos) {
+        this.tamañoBarcosUsuario [pos] = tamañoBarco;
+    }
 }
