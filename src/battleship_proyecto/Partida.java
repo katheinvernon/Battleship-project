@@ -17,6 +17,7 @@ public class Partida {
     
     //Variables 
     Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora, inputHabilidad, habilidadPC;
+    private long tiempo;
         //Comprabaciones de que las opciones seleccionadas por el usuario sean válidas
     Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false, opcion8=false; 
     int [] tamañoBarcosUsuario = {2,3,3,4,5,0};  
@@ -68,6 +69,7 @@ public class Partida {
     public void setTamañoBarcosPc(int[] tamañoBarcos) {
         this.tamañoBarcosPc = tamañoBarcosPc;
     }
+    
     public int[] getTamañoBarcosUsuario() {
         return tamañoBarcosUsuario;
     }
@@ -75,7 +77,15 @@ public class Partida {
     public void setTamañoBarcosUsuario(int[] tamañoBarcos) {
         this.tamañoBarcosUsuario = tamañoBarcosUsuario;
     }
-        
+    
+    public Long getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(Long tiempo) {
+        this.tiempo = tiempo;
+    }
+    
     public void menuPrincipal () {
     
         do {
@@ -334,7 +344,8 @@ public class Partida {
     
         //Variable
         int reiniciar;
-        
+        long start = System.currentTimeMillis();
+                
         Mapa mapPC = new Mapa(tamañoMapa);
         Mapa mapUsuario = new Mapa(tamañoMapa);
         Barco barcosUsuario[] = new Barco [6];
@@ -438,12 +449,14 @@ public class Partida {
             mapPC.disparoRecibir();
             imprimirMapas (mapPC, mapUsuario);
             if(finalizoPartida(barcosPC)){
+                tiempo = (System.currentTimeMillis()-start);
                 aux=1;
             }
             else{
                mapUsuario.disparoPC();
                imprimirMapas (mapPC, mapUsuario);
                if(finalizoPartida(barcosUsuario)){
+                   tiempo = (System.currentTimeMillis()-start);
                    aux=2;
                }
             }
@@ -451,28 +464,52 @@ public class Partida {
         } while (aux==0);
         
         if(aux==1){
-        
-            System.out.println("*** Felicidades ha ganado! ***");
+            double min = (tiempo*0.000017);
+            double sec = ((min%1)*60);
+            double mil = (int)((sec%1)*1000);
+            System.out.println("*** Felicidades ha ganado! *** \n Estadisticas: ");
+            System.out.println(" El tiempo de partida fue de : "+(int)min+": "+(int)sec+": "+(int)(mil/10));
+            System.out.println("Disparos totales: Jugador = "+(int)mapPC.getDisparosTotal()+" PC = "+(int)mapUsuario.getDisparosTotal());
+            System.out.println("Disparos acertados: Jugador = "+(int)mapPC.getDisparosAcertados()+" PC = "+(int)mapUsuario.getDisparosAcertados());
+            System.out.println("Disparos fallidos: Jugador = "+(int)(mapPC.getDisparosTotal()-mapPC.getDisparosAcertados())+" PC = "+(int)(mapUsuario.getDisparosTotal()-mapUsuario.getDisparosAcertados()));
+            System.out.println("Porcentaje de disparos acertados: Jugador = "+(mapPC.getDisparosAcertados()*100/mapPC.getDisparosTotal())+" PC = "+(mapUsuario.getDisparosAcertados()*100/mapUsuario.getDisparosTotal()));
+            mapPC.setDisparosAcertados(0);
+            mapPC.setDisparosAcertados(0);
+            mapUsuario.setDisparosAcertados(0);
+            mapUsuario.setDisparosTotal(0);
         }
         else {
+            double min = (tiempo*0.000017);
+            double sec = ((min%1)*60);
+            double mil = (int)((sec%1)*1000);
             System.out.println("--- Perdiste T.T ---");
+            System.out.println(" El tiempo de partida fue de : "+(int)min+": "+(int)sec+": "+(int)(mil/10));
+            System.out.println("Disparos totales: Jugador = "+(int)mapPC.getDisparosTotal()+" PC = "+(int)mapUsuario.getDisparosTotal());
+            System.out.println("Disparos acertados: Jugador = "+(int)mapPC.getDisparosAcertados()+" PC = "+(int)mapUsuario.getDisparosAcertados());
+            System.out.println("Disparos fallidos: Jugador = "+(int)(mapPC.getDisparosTotal()-mapPC.getDisparosAcertados())+" PC = "+(int)(mapUsuario.getDisparosTotal()-mapUsuario.getDisparosAcertados()));
+            System.out.println("Porcentaje de disparos acertados: Jugador = "+(mapPC.getDisparosAcertados()*100/mapPC.getDisparosTotal())+" PC = "+(mapUsuario.getDisparosAcertados()*100/mapUsuario.getDisparosTotal()));
+            mapPC.setDisparosAcertados(0);
+            mapPC.setDisparosAcertados(0);
+            mapUsuario.setDisparosAcertados(0);
+            mapUsuario.setDisparosTotal(0);
         }
     }
     
     public boolean finalizoPartida(Barco [] barcos) {
-
-        for(int i=0; i<barcos.length; i++){
-            if(barcos[i].getVida_Total()>0){
-                return false;
-            }
+        
+        int total = 0;
+        for (Barco barco : barcos) {
+            total += barco.actualizarVidaTotal();
         }
-        return true;        
+        return total == 0;        
     }    
     
     public void imprimirMapas(Mapa pc, Mapa usuario) {
-    
+        
+        System.out.println("Mapa de la PC");
         pc.mapaImprimir();
         System.out.println("-----------------------------------");
+        System.out.println("Mapa del Jugador");
         usuario.mapaImprimir();
     
     }
