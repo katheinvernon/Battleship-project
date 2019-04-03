@@ -340,8 +340,14 @@ public class Mapa {
         if(mapa[fila][columna].getIdentificador()=='X' || mapa[fila][columna].getIdentificador()=='+'){
                 valido = false;
                 valido2 = false;        
-                System.out.println("En esta casilla no tiene que dispara más, por favor, elija otra");}
-        else
+                System.out.println("En esta casilla no tiene que dispara más, por favor, elija otra");
+        } else if(mapa[fila][columna].isInvencible()){
+                valido = false;
+                valido2 = false;
+                System.out.println("Este barco es invencible");
+                if(mapa[fila][columna].getIdentificador() == '~')
+                    mapa[fila][columna].setIdentificador('O');
+        }else
             valido3 = true;
         }
 
@@ -355,10 +361,10 @@ public class Mapa {
                     case 1: mapa[fila][columna].setIdentificador('+');
                     break;
                     
-                    case 2: mapa[fila][columna].setIdentificador('•');
+                    case 2: mapa[fila][columna].setIdentificador('o');
                     break;
                     
-                    case 3: mapa[fila][columna].setIdentificador('•');
+                    default : mapa[fila][columna].setIdentificador('•');
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);}
                 else
@@ -370,20 +376,20 @@ public class Mapa {
                     case 1: mapa[fila][columna].setIdentificador('+');
                     break;
                     
-                    case 2: mapa[fila][columna].setIdentificador('•');
+                    case 2: mapa[fila][columna].setIdentificador('o');
                     break;
                     
-                    case 3: mapa[fila][columna].setIdentificador('•');
+                    default : mapa[fila][columna].setIdentificador('•');
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
             case '•': this.disparosAcertados++;
                 switch(mapa[fila][columna].getVidas()) {
                     
-                    case 1: mapa[fila][columna].setIdentificador('+');
+                    case 2: mapa[fila][columna].setIdentificador('o');
                     break;
                     
-                    case 2: mapa[fila][columna].setIdentificador('o');
+                    default: mapa[fila][columna].setIdentificador('•');
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
@@ -408,7 +414,7 @@ public class Mapa {
         fila = (int)(Math.random()*(mapa.length));
         columna = (int)(Math.random()*(mapa.length));
         
-        if(mapa[fila][columna].getIdentificador()!='X' && mapa[fila][columna].getIdentificador()!='+')
+        if(mapa[fila][columna].getIdentificador()!='X' && mapa[fila][columna].getIdentificador()!='+' && !mapa[fila][columna].isInvencible())
             valido = true;
     
         } while(!valido);
@@ -424,20 +430,20 @@ public class Mapa {
                     case 1: mapa[fila][columna].setIdentificador('+');
                     break;
                     
-                    case 2: mapa[fila][columna].setIdentificador('•');
+                    case 2: mapa[fila][columna].setIdentificador('o');
                     break;
                     
-                    case 3: mapa[fila][columna].setIdentificador('•');
+                    default : mapa[fila][columna].setIdentificador('•');
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
             case '•': this.disparosAcertados++;
                 switch(mapa[fila][columna].getVidas()) {
                     
-                    case 1: mapa[fila][columna].setIdentificador('+');
+                    case 2: mapa[fila][columna].setIdentificador('o');
                     break;
                     
-                    case 2: mapa[fila][columna].setIdentificador('o');
+                    default : mapa[fila][columna].setIdentificador('•');
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
