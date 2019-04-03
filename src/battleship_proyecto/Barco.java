@@ -73,8 +73,8 @@ public class Barco {
                                      recorrer.setIdentificador('•');
                                     break;
                     }
-                    }
                     break;
+                    }
                     }
                     }
                     if(contador2 > 1)
