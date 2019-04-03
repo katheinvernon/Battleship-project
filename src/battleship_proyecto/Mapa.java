@@ -60,7 +60,7 @@ public class Mapa {
     }
     public void mapaImprimir(){ //Imprime el mapa que se guarda en la instancia creada
         
-        /*Impreme fila por fila a el vector mapa que le llega, el unico impedimento que tiene el metodo es 
+        /*Imprime fila por fila el vector mapa que le llega, el unico impedimento que tiene el metodo es 
           que las zonas de agua no las imprimera centradas si se usan caracteres muy grandes*/  
         
         System.out.print("      ");
@@ -350,7 +350,7 @@ public class Mapa {
         }else
             valido3 = true;
         }
-
+        
         switch (mapa[fila][columna].getIdentificador()) {
  
             case '~':
@@ -371,6 +371,7 @@ public class Mapa {
                     mapa[fila][columna].setIdentificador('X');
                 break;
             case 'O': this.disparosAcertados++;
+            
                 switch(mapa[fila][columna].getVidas()) {
                     
                     case 1: mapa[fila][columna].setIdentificador('+');
@@ -393,7 +394,7 @@ public class Mapa {
                     break;
                 }   mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
-            case 'o':
+            case 'o': this.disparosAcertados++;
                 mapa[fila][columna].setIdentificador('+');
                 mapa[fila][columna].setVidas(mapa[fila][columna].getVidas()-1);
                 break;
@@ -418,7 +419,7 @@ public class Mapa {
             valido = true;
     
         } while(!valido);
-        
+                
         switch (mapa[fila][columna].getIdentificador()) {
  
             case '~':

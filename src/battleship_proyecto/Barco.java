@@ -19,14 +19,15 @@ public class Barco {
         this.pc = pc;
         this.tamaño = tamaño;
         this.numH = numH;
+        this.vida_partes = vida_partes;
         if(numH==1)
-            this.vida_partes = vida_partes++;
-        this.vida_Total = vida_partes*tamaño; //El barco siempre tendra una vida total igual a su tamaño por las vidas iniciales de sus partes
+            this.vida_partes = vida_partes+1;
+        this.vida_Total = this.vida_partes*tamaño; //El barco siempre tendra una vida total igual a su tamaño por las vidas iniciales de sus partes
         this.barco = new Partes_Barco[tamaño];
         
         for (int i = 0; i < tamaño; i++) {
             
-            barco[i] = new Partes_Barco(pc, vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
+            barco[i] = new Partes_Barco(pc, this.vida_partes); //Se utiliza el segundo constructor de la clase Paartes_Barco
         }
         
     }
@@ -50,7 +51,7 @@ public class Barco {
        switch(numH){
            
            case 2 : if(contador2 == 0 && this.vida_Total!=(vida_partes*tamaño)){
-                    System.out.println("Se ha activado la habilidad \"Regenarar vida\" ");
+                    System.out.println("Se ha activado la habilidad \"Regenerar vida\" ");
                     for (Partes_Barco recorrer : barco) {
                         contador2++;
                     if(recorrer.getVidas()!= vida_partes){

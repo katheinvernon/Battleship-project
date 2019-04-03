@@ -25,7 +25,7 @@ public class Partes_Barco {
         this.invencible = false;
         this.vidas = vidas;
         if(pc)
-            this.identificador = 'O';
+            this.identificador = '~';
         else
             this.identificador = 'O';
     }

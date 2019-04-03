@@ -19,7 +19,7 @@ public class Partida {
     private Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora, inputHabilidad, habilidadPC;
     private long tiempo;
         //Comprabaciones de que las opciones seleccionadas por el usuario sean válidas
-    private Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false, opcion8=false; 
+    private Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false, opcion8=false, opcion9=false; 
     int [] tamañoBarcosUsuario = {2,3,3,4,5,0};  
     int [] tamañoBarcosPc = {2,3,3,4,5,0};
     
@@ -356,8 +356,8 @@ public class Partida {
         //Creación de barcos pc
         for (int i=0; i < barcosPC.length; i++) {
         
-            habilidadPC = (int)(Math.random() * 4 + 1);
-            
+            habilidadPC = (int)(Math.random() * 4 + 0);
+                        
             barcosPC[i] = new Barco(this.getTamañoBarcosPc()[i], vidaComputadora, habilidadPC, true);
                
         }
@@ -369,8 +369,8 @@ public class Partida {
                 System.out.println("Seleccione la habilidad para el barco de tamaño: " + this.getTamañoBarcosUsuario()[i] 
                     + "\n[0] Sin habilidad"
                     + "\n[1] Vida extra"
-                    + "\n[2] Regenrar Vida"
-                    + "\n[3] Ultima instancia"
+                    + "\n[2] Regenerar Vida"
+                    + "\n[3] Última instancia"
                     + "\n[4] Levantar escudo");
             
                 inputHabilidad = input.nextInt();
@@ -395,10 +395,19 @@ public class Partida {
         for(int i=0; i<barcosUsuario.length; i++){
             mapUsuario.ponerBarco(barcosUsuario[i]);
             mapUsuario.mapaImprimir();
-            System.out.println("Deseas reiniciar tu mapa?"
+            do {
+                System.out.println("Deseas reiniciar tu mapa?"
                     + "\n[1] Si"
                     + "\n[2] No");
-            reiniciar = input.nextInt();
+                reiniciar = input.nextInt();
+                if (reiniciar != 1 && reiniciar != 2 ) {
+                    System.out.println("Opción inválida, por favor introduzca una opción válida");
+                    opcion9 = false;
+                }
+                else {
+                    opcion9 = true;
+                }
+            }while (!opcion9);
             if (reiniciar == 1) {
                 mapUsuario.vaciarMapa();
                 System.out.println("\nSu mapa ha sido reiniciado \n");
@@ -437,39 +446,33 @@ public class Partida {
             }
                    
         } while (aux==0);
-        
+                
+        double min = (tiempo*0.000017);
+        double sec = ((min-(int)min)*60);
+        double mil = ((sec-(int)sec)*1000);
         if(aux==1){
-            double min = (tiempo*0.000017);
-            double sec = ((min-(int)min)*60);
-            double mil = ((sec-(int)sec)*1000);
-            System.out.println("*** Felicidades ha ganado! *** \n Estadisticas: ");
-            System.out.println(" El tiempo de partida fue de : "+(int)min+": "+(int)sec+": "+(int)(mil));
-            System.out.println("Disparos totales: Jugador = "+(int)mapPC.getDisparosTotal()+" PC = "+(int)mapUsuario.getDisparosTotal());
-            System.out.println("Disparos acertados: Jugador = "+(int)mapPC.getDisparosAcertados()+" PC = "+(int)mapUsuario.getDisparosAcertados());
-            System.out.println("Disparos fallidos: Jugador = "+(int)(mapPC.getDisparosTotal()-mapPC.getDisparosAcertados())+" PC = "+(int)(mapUsuario.getDisparosTotal()-mapUsuario.getDisparosAcertados()));
-            System.out.println("Porcentaje de disparos acertados: Jugador = "+(mapPC.getDisparosAcertados()*100/mapPC.getDisparosTotal())+" PC = "+(mapUsuario.getDisparosAcertados()*100/mapUsuario.getDisparosTotal()));
-            mapPC.setDisparosAcertados(0);
-            mapPC.setDisparosAcertados(0);
-            mapUsuario.setDisparosAcertados(0);
-            mapUsuario.setDisparosTotal(0);
+            System.out.println("\n*** Felicidades ha ganado! *** \n Resultados: ");
         }
         else {
-            double min = (tiempo*0.000017);
-            double sec = ((min%1)*60);
-            double mil = (int)((sec%1)*1000);
-            System.out.println("--- Perdiste T.T ---");
-            System.out.println(" El tiempo de partida fue de : "+(int)min+": "+(int)sec+": "+(int)(mil/10));
-            System.out.println("Disparos totales: Jugador = "+(int)mapPC.getDisparosTotal()+" PC = "+(int)mapUsuario.getDisparosTotal());
-            System.out.println("Disparos acertados: Jugador = "+(int)mapPC.getDisparosAcertados()+" PC = "+(int)mapUsuario.getDisparosAcertados());
-            System.out.println("Disparos fallidos: Jugador = "+(int)(mapPC.getDisparosTotal()-mapPC.getDisparosAcertados())+" PC = "+(int)(mapUsuario.getDisparosTotal()-mapUsuario.getDisparosAcertados()));
-            System.out.println("Porcentaje de disparos acertados: Jugador = "+(mapPC.getDisparosAcertados()*100/mapPC.getDisparosTotal())+" PC = "+(mapUsuario.getDisparosAcertados()*100/mapUsuario.getDisparosTotal()));
-            mapPC.setDisparosAcertados(0);
-            mapPC.setDisparosAcertados(0);
-            mapUsuario.setDisparosAcertados(0);
-            mapUsuario.setDisparosTotal(0);
+            System.out.println("\n--- Perdiste T.T --- \n Resultados: ");
         }
+        
+        System.out.println("\nEl tiempo de partida fue de: "+(int)min+":"+(int)sec+":"+(int)(mil));
+        System.out.println("\nDisparos totales: Jugador = "+(int)mapPC.getDisparosTotal()+" PC = "+(int)mapUsuario.getDisparosTotal());
+        System.out.println("\nDisparos acertados: Jugador = "+(int)mapPC.getDisparosAcertados()+" PC = "+(int)mapUsuario.getDisparosAcertados());
+        System.out.println("\nDisparos fallidos: Jugador = "+(int)(mapPC.getDisparosTotal()-mapPC.getDisparosAcertados())+" PC = "+(int)(mapUsuario.getDisparosTotal()-mapUsuario.getDisparosAcertados()));
+        System.out.println("\nPorcentaje de disparos acertados: Jugador = "+(mapPC.getDisparosAcertados()*100/mapPC.getDisparosTotal())+" PC = "+(mapUsuario.getDisparosAcertados()*100/mapUsuario.getDisparosTotal()));
+        mapPC.setDisparosAcertados(0);
+        mapPC.setDisparosAcertados(0);
+        mapUsuario.setDisparosAcertados(0);
+        mapUsuario.setDisparosTotal(0);
+                    
+//            double sec = ((min%1)*60);
+//            double mil = (int)((sec%1)*1000);
+                    
     }
     
+    //Función para verificar cuando termina la partida 
     public boolean finalizoPartida(Barco [] barcos) {
         
         int total = 0;
@@ -479,7 +482,7 @@ public class Partida {
         return total == 0;        
     }
     
-    public void restaurarVidas(int vidas, Barco[] barcos){
+    /*public void restaurarVidas(int vidas, Barco[] barcos){
         
         int parte, respuesta = 0;
         System.out.println("Puede aumentar un total de "+vidas+" puntos de vidas a las partes de sus barcos");
@@ -521,8 +524,9 @@ public class Partida {
             
             }
     
-    }
+    }*/
     
+    //Función para mostrar ambos mapas
     public void imprimirMapas(Mapa pc, Mapa usuario) {
         
         System.out.println("Mapa de la PC");
@@ -533,6 +537,7 @@ public class Partida {
     
     }
     
+    //Instrucciones
     public void comoJugar(){
     
         do{
@@ -546,9 +551,9 @@ public class Partida {
             
             System.out.println("\n***Habilidades***"
                     + "\n[1] Vida extra: el barco tendrá una vida extra en cada una de sus partes"
-                    + "\n[2] Regenarar vida : el barco regenerar una vida a alguna piesa si puede, esta hablidad se activa cada 3 turnos"
-                    + "\n[3] Ultima instancia: el barco regenra la vida por completo al llegar a una (1) vida en total, solo se activa una vez por partida"
-                    + "\n[4] Levanter escudos: el barco sera invencible durante el turno, no podras dispararle a sus piezas");
+                    + "\n[2] Regenerar vida: el barco regenera una vida a alguna pieza si puede, esta habilidad se activa cada 3 turnos"
+                    + "\n[3] Última instancia: el barco regenera la vida por completo al llegar a una (1) vida en total, solo se activa una vez por partida"
+                    + "\n[4] Levanter escudos: el barco sera invencible durante el turno, no podrás dispararle a sus piezas");
             
             System.out.println("\n····Niveles de dificultad····"
                     + "\nNivel             Vidas jugador             Vidas computador "
