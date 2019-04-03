@@ -12,8 +12,9 @@ package battleship_proyecto;
 public class Partes_Barco {
     
     private char identificador; //Guardara el caracter que se imprimira en pantalla al dar el mapa
-    private int vidas; // Vida entera : O, Segunda media : •, Vida baja : o, Destruido : + 
-    private boolean PC; // Identifica si es una parte para los barcos de la computadora
+    private int vidas; // Vida entera : O, Dañado : •, Vida baja : o, Destruido : + 
+    private boolean PC, invencible; // Identifica si es una parte para los barcos de la computadora
+    
 
     public Partes_Barco() { //Este constructor creara las partes de barco que enrealidad seran agua, se inicializara siempre.
         this.identificador = '~';
@@ -21,9 +22,10 @@ public class Partes_Barco {
     
     public Partes_Barco(boolean pc, int vidas) { //Este constructor crea las partes de un barco para la computadora, las cuales comenzaran con el caracter de "Vida entera" 
         this.PC = pc;
+        this.invencible = false;
         this.vidas = vidas;
         if(pc)
-            this.identificador = '~';
+            this.identificador = 'O';
         else
             this.identificador = 'O';
     }
@@ -50,6 +52,14 @@ public class Partes_Barco {
 
     public void setPC(boolean PC) {
         this.PC = PC;
+    }
+
+    public boolean isInvencible() {
+        return invencible;
+    }
+
+    public void setInvencible(boolean invencible) {
+        this.invencible = invencible;
     }
     
 }

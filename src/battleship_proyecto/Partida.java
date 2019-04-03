@@ -16,10 +16,10 @@ public class Partida {
     Scanner input = new Scanner (System.in);
     
     //Variables 
-    Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora, inputHabilidad, habilidadPC;
+    private Integer inicio, modo, dificultad, tamañoMapa, nuevoJuego, tamañoBarco, tamañoBarcoPC, volverMenu, vidaJugador, vidaComputadora, inputHabilidad, habilidadPC;
     private long tiempo;
         //Comprabaciones de que las opciones seleccionadas por el usuario sean válidas
-    Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false, opcion8=false; 
+    private Boolean opcion=false, opcion2=false, opcion3=false, opcion4=false, opcion5=false, opcion6=false, opcion7=false, opcion8=false; 
     int [] tamañoBarcosUsuario = {2,3,3,4,5,0};  
     int [] tamañoBarcosPc = {2,3,3,4,5,0};
     
@@ -356,26 +356,10 @@ public class Partida {
         //Creación de barcos pc
         for (int i=0; i < barcosPC.length; i++) {
         
-            habilidadPC = (int)(Math.random() * 4 + 0);
+            habilidadPC = (int)(Math.random() * 4 + 1);
             
-            switch (habilidadPC) {
-                case 0:
-                    barcosPC[i] = new BarcoSinHabilidad(this.getTamañoBarcosPc()[i], vidaComputadora, true);
-                    break;
-                case 1:
-                    barcosPC[i] = new BarcoHabilidad1(this.getTamañoBarcosPc()[i], vidaComputadora, true);
-                    break;
-                case 2:
-                    barcosPC[i] = new BarcoHabilidad2(this.getTamañoBarcosPc()[i], vidaComputadora, true);
-                    break;
-                case 3:
-                    barcosPC[i] = new BarcoHabilidad3(this.getTamañoBarcosPc()[i], vidaComputadora, true);
-                    break;
-                default:
-                    barcosPC[i] = new BarcoHabilidad4(this.getTamañoBarcosPc()[i], vidaComputadora, true);
-                    break;
-            }
-                  
+            barcosPC[i] = new Barco(this.getTamañoBarcosPc()[i], vidaComputadora, habilidadPC, true);
+               
         }
                
         //Creación de barcos usuario
@@ -385,9 +369,9 @@ public class Partida {
                 System.out.println("Seleccione la habilidad para el barco de tamaño: " + this.getTamañoBarcosUsuario()[i] 
                     + "\n[0] Sin habilidad"
                     + "\n[1] Vida extra"
-                    + "\n[2]"
-                    + "\n[3]"
-                    + "\n[4]");
+                    + "\n[2] Regenrar Vida"
+                    + "\n[3] Ultima instancia"
+                    + "\n[4] Levantar escudo");
             
                 inputHabilidad = input.nextInt();
                 
@@ -403,26 +387,11 @@ public class Partida {
                 }
             }while (!opcion8);
             
-            switch (inputHabilidad) {
-                case 0:
-                    barcosUsuario[i] = new BarcoSinHabilidad(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
-                    break;
-                case 1:
-                    barcosUsuario[i] = new BarcoHabilidad1(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
-                    break;
-                case 2:
-                    barcosUsuario[i] = new BarcoHabilidad2(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
-                    break;
-                case 3:
-                    barcosUsuario[i] = new BarcoHabilidad3(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
-                    break;
-                default:
-                    barcosUsuario[i] = new BarcoHabilidad4(this.getTamañoBarcosUsuario()[i], vidaJugador, false);
-                    break;
-            }
-                    
+           barcosUsuario[i] = new Barco(this.getTamañoBarcosUsuario()[i], vidaJugador, inputHabilidad, false);
+           
         }
-                
+        
+         mapUsuario.mapaImprimir();
         for(int i=0; i<barcosUsuario.length; i++){
             mapUsuario.ponerBarco(barcosUsuario[i]);
             mapUsuario.mapaImprimir();
@@ -447,6 +416,9 @@ public class Partida {
         
         do{
             mapPC.disparoRecibir();
+            for (Barco habilidad : barcosPC) {
+                habilidad.habilidad();
+            }
             imprimirMapas (mapPC, mapUsuario);
             if(finalizoPartida(barcosPC)){
                 tiempo = (System.currentTimeMillis()-start);
@@ -454,6 +426,9 @@ public class Partida {
             }
             else{
                mapUsuario.disparoPC();
+               for (Barco habilidad : barcosUsuario) {
+                habilidad.habilidad();
+               }
                imprimirMapas (mapPC, mapUsuario);
                if(finalizoPartida(barcosUsuario)){
                    tiempo = (System.currentTimeMillis()-start);
@@ -465,10 +440,10 @@ public class Partida {
         
         if(aux==1){
             double min = (tiempo*0.000017);
-            double sec = ((min%1)*60);
-            double mil = (int)((sec%1)*1000);
+            double sec = ((min-(int)min)*60);
+            double mil = ((sec-(int)sec)*1000);
             System.out.println("*** Felicidades ha ganado! *** \n Estadisticas: ");
-            System.out.println(" El tiempo de partida fue de : "+(int)min+": "+(int)sec+": "+(int)(mil/10));
+            System.out.println(" El tiempo de partida fue de : "+(int)min+": "+(int)sec+": "+(int)(mil));
             System.out.println("Disparos totales: Jugador = "+(int)mapPC.getDisparosTotal()+" PC = "+(int)mapUsuario.getDisparosTotal());
             System.out.println("Disparos acertados: Jugador = "+(int)mapPC.getDisparosAcertados()+" PC = "+(int)mapUsuario.getDisparosAcertados());
             System.out.println("Disparos fallidos: Jugador = "+(int)(mapPC.getDisparosTotal()-mapPC.getDisparosAcertados())+" PC = "+(int)(mapUsuario.getDisparosTotal()-mapUsuario.getDisparosAcertados()));
@@ -502,7 +477,51 @@ public class Partida {
             total += barco.actualizarVidaTotal();
         }
         return total == 0;        
-    }    
+    }
+    
+    public void restaurarVidas(int vidas, Barco[] barcos){
+        
+        int parte, respuesta = 0;
+        System.out.println("Puede aumentar un total de "+vidas+" puntos de vidas a las partes de sus barcos");
+        System.out.println("Diga cual varco queire recuperar: \nTamaño 2 (1) \nTamaño 3 (2) \nTamaño 3 (3) \nTamaño 4 (4) \nTamaño 5 (5) \nTamaño "+barcos[5].barco.length+" (6)");
+            
+            switch(input.nextInt()){
+                
+                case 1 : do{
+                    
+                         System.out.println("Estas son las vidas actuales del Barco : ");
+                         System.out.println("Parte 1: "+barcos[0].barco[0].getVidas());
+                         System.out.println("Parte 2: "+barcos[0].barco[1].getVidas());
+                         System.out.println("Diga el numero de la parte que desea aumentarle una vida: ");
+                         parte = input.nextInt();
+                         
+                         if(parte == barcos[0].vida_partes)
+                             System.out.println("Esta parte ya tiene las vidas al máximo, elija otra.");
+                         else{
+                         do {
+                             barcos[0].barco[parte].setVidas(barcos[0].barco[parte].getVidas()+1);
+                             vidas--;
+                             if(vidas!=0 || parte == barcos[0].vida_partes){
+                             System.out.println("Ya no puede segir sumando vidas");
+                             respuesta=1;
+                             } else {
+                             System.out.println("¿Desea aumentarle otra ves una vida? \n Si (0)   No (1)");
+                             respuesta = input.nextInt();
+                             } 
+                         } while(respuesta==0);}
+                         
+                         if(vidas!=0){
+                             System.out.println("Ya no puede segir sumando vidas");
+                             respuesta = 1;
+                         } else {
+                         System.out.println("¿Desea escoger otra parte? \nSi (0)   No (1)");
+                            respuesta = input.nextInt();
+                         }
+                            }while(respuesta==0 && vidas!=0);
+            
+            }
+    
+    }
     
     public void imprimirMapas(Mapa pc, Mapa usuario) {
         
@@ -518,18 +537,18 @@ public class Partida {
     
         do{
             System.out.println("[----Cómo jugar----]"
-                + "\n\nO : El barco tiene la vida completa"
-                + "\n• : El barco tiene la vida media"
-                + "\no : El barco tiene la vida baja"
-                + "\n+ : El barco está destruido"
+                + "\n\nO : La parte del barco tiene la vida completa"
+                + "\n• : La parte del barco esta dañada"
+                + "\no : La parte del barco le queda una vida"
+                + "\n+ : El la parte del barco está destruido"
                 + "\n~ : Casilla llena de agua"
                 + "\nX : Disparo fallido ");
             
             System.out.println("\n***Habilidades***"
                     + "\n[1] Vida extra: el barco tendrá una vida extra en cada una de sus partes"
-                    + "\n[2]"
-                    + "\n[3]"
-                    + "\n[4]");
+                    + "\n[2] Regenarar vida : el barco regenerar una vida a alguna piesa si puede, esta hablidad se activa cada 3 turnos"
+                    + "\n[3] Ultima instancia: el barco regenra la vida por completo al llegar a una (1) vida en total, solo se activa una vez por partida"
+                    + "\n[4] Levanter escudos: el barco sera invencible durante el turno, no podras dispararle a sus piezas");
             
             System.out.println("\n····Niveles de dificultad····"
                     + "\nNivel             Vidas jugador             Vidas computador "

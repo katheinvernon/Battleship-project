@@ -11,13 +11,16 @@ package battleship_proyecto;
  */
 public class Barco {
     
-    protected int tamaño, vida_Total, vida_partes;
-    protected boolean pc;
+    protected int tamaño, vida_Total, vida_partes, numH, contador4 = 0, contador2 = 0;
+    protected boolean pc, full, invencible;
     protected Partes_Barco[] barco; //El barco estara hecho por un arreglo de Partes_Barco
 
-    public Barco(int tamaño, int vida_partes, boolean pc) { //Barcos para la maquina
+    public Barco(int tamaño, int vida_partes, int numH, boolean pc) { //Barcos para la maquina
         this.pc = pc;
         this.tamaño = tamaño;
+        this.numH = numH;
+        if(numH==1)
+            this.vida_partes = vida_partes++;
         this.vida_Total = vida_partes*tamaño; //El barco siempre tendra una vida total igual a su tamaño por las vidas iniciales de sus partes
         this.barco = new Partes_Barco[tamaño];
         
@@ -40,6 +43,82 @@ public class Barco {
         this.setVida_Total(nuevoTotal);
         return nuevoTotal;
     }
+    
+   public void habilidad(){
+       
+       if(numH!=0 || numH!=1)
+       switch(numH){
+           
+           case 2 : if(contador2 == 0 && this.vida_Total!=(vida_partes*tamaño)){
+                    System.out.println("Se ha activado la habilidad \"Regenarar vida\" ");
+                    for (Partes_Barco recorrer : barco) {
+                        contador2++;
+                    if(recorrer.getVidas()!= vida_partes){
+                    recorrer.setVidas(recorrer.getVidas()+1);
+                    
+                    switch(recorrer.getIdentificador()){
+                        
+                        case '+' : recorrer.setIdentificador('o');
+                                   break;
+                                   
+                        case 'o' : if(vida_partes!=recorrer.getVidas()){
+                                    recorrer.setIdentificador('•');
+                                    } else {
+                                    recorrer.setIdentificador('O');
+                                    }
+                                    break;
+                        case '•' : if(recorrer.getVidas()==vida_partes)
+                                    recorrer.setIdentificador('O');
+                                    else
+                                     recorrer.setIdentificador('•');
+                                    break;
+                    }
+                    }
+                    break;
+                    }
+                    }
+                    if(contador2 > 1)
+                        contador2++;
+        
+                    if(contador2==4)
+                        contador2 = 0;
+                    break;
+                    
+           case 3 : if(vida_Total==1 && !full){
+                    System.out.println("Se ha activado la habilidad la habilidad \"Ultima Instancia\"");
+                    for (Partes_Barco recorrer : barco) {
+                
+                    recorrer.setVidas(vida_partes);
+                    recorrer.setIdentificador('O');
+                    }    
+                    full = true;
+                    } break;
+                    
+           case 4 : if(contador4 == 0 && this.vida_Total!=(vida_partes*tamaño)){
+                    contador4++;
+                    System.out.println("Se ha activado la habilidad \"Levantar escudos\" ");
+                    for (Partes_Barco recorrer : barco) {
+                        
+                        recorrer.setInvencible(true);
+                    
+                    }
+                    } else if(contador4==1){
+                    
+                        for (Partes_Barco recorrer : barco) {
+                
+                            recorrer.setInvencible(false);
+                    }
+                    }
+                    if(contador4 > 1)
+                        contador4++;
+        
+                    if(contador4==3)
+                        contador4 = 0;
+                    break;
+           
+        }
+   
+   }
 
     public int getTamaño() {
         return tamaño;
